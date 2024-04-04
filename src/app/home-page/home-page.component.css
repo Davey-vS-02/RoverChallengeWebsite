@@ -1,0 +1,81 @@
+main
+{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.hidden-overflow
+{
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.vignette
+{
+    position: absolute;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0.7));
+    pointer-events: none;
+}
+
+.bg-img
+{
+    position: absolute;
+    width: 105vw;
+    top: calc(50%);
+    left: calc(50%);
+    z-index: 1;
+    opacity: 0.5;
+}
+
+.earth-cutout
+{
+    position: absolute;
+    width: 20vw;
+    top: calc(50%);
+    left: calc(50%);
+    z-index: 1;
+    background: transparent;
+    background-color: transparent;
+    filter: brightness(50%);
+}
+
+.mars-cutout
+{
+    position: absolute;
+    width: 60vw;
+    top: calc(50% + 15vw);
+    left: calc(50% - 35vw);
+    z-index: 1;
+    background: transparent;
+    background-color: transparent;
+}
+
+.home-page-header
+{
+    font-weight: 100;
+    font-size: 8vw;
+    z-index: 1000;
+    color: aliceblue;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    user-select: none;
+}
+
+.parallax
+{
+    transition: transform 0.2s ease-out;
+}
+
+.rotated-parallax
+{
+    transition: transform 0.3s ease-out;
+}

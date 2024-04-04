@@ -1,0 +1,20 @@
+<main>
+    <div class="rover-container">
+        <h2>Rovers</h2>
+        <ul id="rover-list"></ul>
+      </div>
+      <form id="add-rover-form">
+        <label for="start-x">Starting X Coordinate:</label>
+        <input type="number" id="start-x" name="start-x" required>
+        <label for="start-y">Starting Y Coordinate:</label>
+        <input type="number" id="start-y" name="start-y" required>
+        <label for="direction">Direction (N/E/W/S):</label>
+        <input type="text" id="direction" name="direction" maxlength="1" required>
+        <button type="submit">Add Rover</button>
+      </form>
+      <form id="move-form">
+        <label for="move-instructions">Move Instructions (N/E/W/S):</label>
+        <input type="text" id="move-instructions" name="move-instructions" required>
+        <button type="submit">Move Rovers</button>
+      </form>
+</main>

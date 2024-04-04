@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;800&display=swap');
+
+@font-face {
+    font-family: BlackMango_Black;
+    src: url(/./assets/Fonts/blackmango-black-webfont.woff);
+}
+
+*, *::before, *::after
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+::selection
+{
+    background-color: #3C4142;
+}
+
+.nav-header
+{
+    position: absolute;
+    width: 100vw;
+    height: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.rover-challenge-header
+{
+    color: aliceblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 40vw;
+    font-family: BlackMango_Black, sans-serif;
+    font-size: 2vw;
+    font-weight: 700;
+}
+
+header
+{
+    position: absolute;
+    z-index: 500;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 3.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2a2a2a;
+    user-select: none;
+}
+
+header nav 
+{
+    width: 100vw;
+    margin: 0 2vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links
+{
+    z-index: 500;
+}
+
+header ul
+{
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+header ul li
+{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+header ul li:hover
+{
+    scale: 1.05;
+    transition: 0.3s;
+}
+
+header ul a
+{
+    text-decoration: none;
+    font-family: BlackMango_Black, sans-serif;
+    font-weight: 800;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: calc(0.65vw + 0.65vh);
+}
+
+header ul .nav-elements
+{
+    padding-left: 2vw;
+    padding-right: 2vw;
+}
+
+app-home-page
+{
+    overflow: hidden;
+}
