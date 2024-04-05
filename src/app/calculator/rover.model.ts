@@ -2,15 +2,13 @@ export class Rover {
 
     //Parameters for rover objects.
     id: string;
-    coordinateX: number;
-    coordinateY: number;
+    coordinates: [number, number];
     direction: string;
     
     //Constructor for rover objects.
-    constructor(id: string, coordinateX: number, coordinateY: number, direction: string) {
+    constructor(id: string, coordinates: [number,number], direction: string) {
       this.id = id;
-      this.coordinateX = coordinateX;
-      this.coordinateY = coordinateY;
+      this.coordinates = coordinates;
       this.direction = direction;
     }
   
@@ -18,8 +16,8 @@ export class Rover {
     //With branchless coding, the conditionals are converted to 0 for false and 1 for true.
     //This value is then added to the rover's current coordinate.
     move(instruction: string): void {
-      this.coordinateY = +(instruction === 'E') - +(instruction === 'W');
-      this.coordinateY = +(instruction === 'N') - +(instruction === 'S');
+      this.coordinates[0] = +(instruction === 'E') - +(instruction === 'W');
+      this.coordinates[1] = +(instruction === 'N') - +(instruction === 'S');
     }
   }
   

@@ -17,10 +17,25 @@ export class CalculatorComponent {
     document.body.style.overflow = '';
   }
 
-  rovers: Rover[] = [];
+  
+// Function to generate rover objects based on user input
+  generateRovers() {
+    const roverCountInput = document.getElementById("roverCount") as HTMLInputElement;
+    const roverCount = parseInt(roverCountInput.value);
 
-  addRover(startX: number, startY: number, directions: string): void {
-    // Your logic to add a rover to the rovers array
+    const rovers = [];
+    for (let i = 1; i <= roverCount; i++) {
+      const rover = new Rover(`Rover${i}`, [0,0], "N"); // Default parameters
+      rovers.push(rover);
+    }
+
+    console.log(rovers);
+    return rovers;
+  }
+
+  populateTable()
+  {
+    console.log('Imagenary table created.')
   }
 
   moveRovers(instructions: string): void {
