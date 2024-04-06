@@ -1,21 +1,25 @@
 <main>
-  <h2>Rovers Information</h2>
+  <div class="calculator-div">
+    <h2 class="calculator-header">Rovers Information</h2>
 
-  <label for="roverCount">Number of Rovers:</label>
-  <input type="number" id="roverCount" placeholder="Rover Count">
-  <button onclick="populateTable()">Generate Rovers</button>
-  
-  <table id="roversTable">
-    <thead>
-      <tr>
-        <th>Rover Name</th>
-        <th>X Position</th>
-        <th>Y Position</th>
-        <th>Direction</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Rover data will be dynamically added here -->
-    </tbody>
-  </table>
+    <input type="number" id="roverCount" placeholder="Rover Count">
+    <button (click)="generateRovers()">Generate Rovers</button>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Rover Name</th>
+          <th>Coordinates</th>
+          <th>Direction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rover of roverList">
+          <td>{{ rover.id }}</td>
+          <td>{{ rover.coordinates }}</td>
+          <td>{{ rover.direction }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </main>

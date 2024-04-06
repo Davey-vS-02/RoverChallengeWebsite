@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Rover } from './rover.model';
+import { CommonModule, NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-calculator',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, CommonModule, NgIf, NgFor],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.css'
 })
 export class CalculatorComponent {
+
+  roverList: Rover[] = [];
 
   ngOnInit()
   {
@@ -25,7 +28,7 @@ export class CalculatorComponent {
 
     const rovers = [];
     for (let i = 1; i <= roverCount; i++) {
-      const rover = new Rover(`Rover${i}`, [0,0], "N"); // Default parameters
+      const rover = new Rover(`Rover${i}`, [0,0], ""); // Default parameters
       rovers.push(rover);
     }
 
@@ -35,15 +38,30 @@ export class CalculatorComponent {
 
   populateTable()
   {
-    console.log('Imagenary table created.')
+    const tableBody = document.querySelector("#roversTable tbody") as HTMLTableSectionElement;
+
+    // Clear existing table rows
+    tableBody.innerHTML = "";
+  
+    // Generate rover objects based on user input
+    const roverList = this.generateRovers();
+
+    // Iterate through rover objects and populate the table
+    roverList.forEach(rover => {
+    const row = tableBody.insertRow();
+    const cell1 = row.insertCell(0);
+    const cell2 = row.insertCell(1);
+    const cell3 = row.insertCell(2);
+
+    cell1.textContent = rover.id;
+    cell2.textContent = rover.coordinates.join(', ');
+    cell3.textContent = rover.direction;
+    
+  });
+    console.log('Table created.')
   }
 
   moveRovers(instructions: string): void {
     // Your logic to move the rovers according to instructions
   }
-
-  displayRovers(): void {
-    // Your logic to display rovers in the UI
-  }
-
 }

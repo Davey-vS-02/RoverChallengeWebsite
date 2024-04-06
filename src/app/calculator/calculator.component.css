@@ -1,26 +1,23 @@
-.rover-container 
-  {
-    width: 100vw;
-    margin-bottom: 20px;
-    top: 0;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  #rover-list 
-  {
-    
-    list-style-type: none;
-  }
-  
-  #rover-list li 
-  {
-    margin-bottom: 5px;
-  }
+.calculator-div
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 10vh;
+}
 
-  label
-  {
-    color: black;
-  }
+label
+{
+  color: aliceblue;
+}
+
+.calculator-header
+{
+  color: aliceblue;
+}
+
+table
+{
+  border-color: aliceblue;
+}
