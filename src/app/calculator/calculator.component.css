@@ -4,19 +4,34 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 10vh;
+  padding-top: 7vh;
+}
+
+/* Reset h2 properties */
+h2
+{
+  margin: 0;
+}
+
+.calculator-header
+{
+  margin-top: 4vw;
+  margin-bottom: 4vw;
+  color: aliceblue;
+  font-size: 5vw;
+}
+
+.rover-count-header
+{
+  color: aliceblue;
+  font-size: 1.8vw;
+  margin-bottom: 1vw;
 }
 
 label
 {
   color: aliceblue;
 } 
-
-.calculator-header
-{
-  color: aliceblue;
-  font-size: 5vw;
-}
 
 .generate-rovers-button
 {
@@ -25,6 +40,19 @@ label
   border-radius: 0.8vw;
   margin-bottom: 5vw;
   margin-top: 5vw;
+  border: 0vw solid transparent;
+  margin-right: 2vw;
+}
+
+.move-rovers-button
+{
+  margin-left: 2vw;
+  width: 10vw;
+  aspect-ratio: 10/4;
+  border-radius: 0.8vw;
+  margin-bottom: 5vw;
+  margin-top: 5vw;
+  border: 0vw solid transparent;
 }
 
 table
@@ -32,10 +60,13 @@ table
   border-color: aliceblue;
   color: aliceblue;
   border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 5vw;
 }
 
-table, th, td {
-  border: 1.5px solid aliceblue;
+table, th, td 
+{
+  border: 0.2vw solid aliceblue;
 }
 
 th, td
@@ -43,7 +74,8 @@ th, td
   padding: 0.5vw;
 }
 
-input[type=number]::-webkit-inner-spin-button {
+input[type=number]::-webkit-inner-spin-button 
+{
   opacity: 0;
 }
 
@@ -52,41 +84,63 @@ button
   font-size: 1vw;
   font-weight: 500;
   color: aliceblue;
-  background-color: rgb(99, 99, 99);
+  background-color: rgb(100, 100, 100);
+}
+
+button:hover
+{
+  transition: all 0.35s ease-out;
+  font-size: 1.1;
+  background-color: rgb(175, 180, 184);
+  color: rgb(26, 26, 26);
 }
 
 .rover-count-input
 {
-  width: 12vw;
+  width: 15vw;
   aspect-ratio: 5/1;
   font-size: 1.5vw;
   font-weight: 500;
   text-align: center;
   background-color: rgb(100, 100, 100);
+  border-radius: 2vw;
   color: aliceblue;
+  border: 0px solid transparent;
 }
 
-input::-webkit-input-placeholder {
-  color: rgb(180, 187, 192) !important;
-  text-align: center;
-  }
-  
-  input:-moz-placeholder { /* Firefox 18- */
-  color: rgb(180, 187, 192) !important;
-  text-align: center;
-  }
-  
-  input::-moz-placeholder {  /* Firefox 19+ */
-  color: rgb(180, 187, 192) !important; 
-  text-align: center; 
-  }
-  
-  input:-ms-input-placeholder {  
-  color: rgb(180, 187, 192) !important;  
-  text-align: center;
-  }
+input::-webkit-input-placeholder 
+{
+color: rgb(180, 187, 192) !important;
+text-align: center;
+}
 
-  tbody
-  {
-    border: 1.5px solid aliceblue;
-  }
+/* Firefox 18- */
+input:-moz-placeholder 
+{ 
+color: rgb(180, 187, 192) !important;
+text-align: center;
+}
+
+/* Firefox 19+ */
+input::-moz-placeholder 
+{
+color: rgb(180, 187, 192) !important; 
+text-align: center; 
+}
+
+/* Internet Explorer */
+input:-ms-input-placeholder 
+{  
+color: rgb(180, 187, 192) !important;  
+text-align: center;
+}
+
+tbody
+{
+  border: 0.2vw solid aliceblue;
+}
+
+input value
+{
+  text-align: right;
+}

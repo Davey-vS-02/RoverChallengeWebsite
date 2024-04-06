@@ -2,21 +2,28 @@
   <div class="calculator-div">
     <h2 class="calculator-header">Coordinate Calculator</h2>
 
+    <h2 class="rover-count-header">Add amount of rovers:</h2>
     <input type="number" id="roverCount" placeholder="Rover Count" class="rover-count-input" min="1">
-    <button (click)="populateTable()" class="generate-rovers-button">Generate Rovers</button>
+
+    <div class="rover-buttons">
+      <button (click)="populateTable()" class="generate-rovers-button">Generate Rovers</button>
+      <button (click)="moveRovers()" class="move-rovers-button">Move Rovers</button>
+    </div>
     
     <table>
       <thead>
         <tr>
           <th>Rover Name</th>
-          <th>Coordinates</th>
+          <th>x-Coordinates</th>
+          <th>y-Coordinates</th>
           <th>Direction</th>
         </tr>
       </thead>
       <tbody id="table-body">
         <tr *ngFor="let rover of roverList">
           <td>{{ rover.id }}</td>
-          <td>{{ rover.startingCoordinates }}</td>
+          <td>{{ rover.xCoordinates }}</td>
+          <td>{{ rover.yCoordinates }}</td>
           <td>{{ rover.direction }}</td>
         </tr>
       </tbody>
