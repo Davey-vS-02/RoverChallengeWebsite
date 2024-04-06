@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterEvent, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Rover } from './rover.model';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
 
@@ -38,13 +38,14 @@ export class CalculatorComponent {
 
   populateTable()
   {
-    const tableBody = document.querySelector("#roversTable tbody") as HTMLTableSectionElement;
+    const tableBody = document.getElementById('table-body') as HTMLTableSectionElement;
 
     // Clear existing table rows
     tableBody.innerHTML = "";
   
     // Generate rover objects based on user input
     const roverList = this.generateRovers();
+    console.log(roverList);
 
     // Iterate through rover objects and populate the table
     roverList.forEach(rover => {
@@ -53,12 +54,13 @@ export class CalculatorComponent {
     const cell2 = row.insertCell(1);
     const cell3 = row.insertCell(2);
 
+    //Populate cells with rover parameters.
     cell1.textContent = rover.id;
-    cell2.textContent = rover.coordinates.join(', ');
+    cell2.textContent = rover.startingCoordinates.join(', ');
     cell3.textContent = rover.direction;
     
   });
-    console.log('Table created.')
+    console.log('Table created.');
   }
 
   moveRovers(instructions: string): void {
