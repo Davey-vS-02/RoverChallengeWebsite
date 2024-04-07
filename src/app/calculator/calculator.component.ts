@@ -12,23 +12,25 @@ import { CommonModule, NgIf, NgFor } from '@angular/common';
 })
 export class CalculatorComponent {
 
+  //Variable that will store rover objects.
   roverList: Rover[] = [];
 
+  //Upon component creation.
   ngOnInit()
   {
-    //Set overflow to default.
+    //Set overflow to default (Because overflow of home-page needs to be hidden, but no other components thus far.)
     document.body.style.overflow = '';
   }
 
-  
-// Function to generate rover objects based on user input
-  generateRovers() {
+  // Function to generate rover objects based on user input
+  generateRovers() 
+  {
     const roverCountInput = document.getElementById("roverCount") as HTMLInputElement;
     const roverCount = parseInt(roverCountInput.value);
 
     const rovers = [];
     for (let i = 1; i <= roverCount; i++) {
-      const rover = new Rover(`Rover${i}`, 0, 0, ""); // Default parameters
+      const rover = new Rover(`Rover ${i}`, 0, 0, ""); // Default parameters
       rovers.push(rover);
     }
 
@@ -44,71 +46,85 @@ export class CalculatorComponent {
     tableBody.innerHTML = "";
   
     // Generate rover objects based on user input
-    const roverList = this.generateRovers();
-    console.log(roverList);
+    this.roverList = this.generateRovers();
+    console.log(this.roverList);
 
     // Iterate through rover objects and populate the table
-    roverList.forEach(rover => {
-    const row = tableBody.insertRow();
-    const cell1 = row.insertCell(0);
-    const cell2 = row.insertCell(1);
-    const cell3 = row.insertCell(2);
-    const cell4 = row.insertCell(3);
-
-    //Populate cells with rover parameters.
-    cell1.textContent = rover.id;
-
-    //Add input for starting x coordinates and set it to the starting x coordinates.
-    const xCoordinatesInput = document.createElement('input');
-    xCoordinatesInput.type = 'text';
-    xCoordinatesInput.value = rover.xCoordinates.toString();
-
-    //Add input for starting y coordinates and set it to the starting y coordinates.
-    const yCoordinatesInput = document.createElement('input');
-    yCoordinatesInput.type = 'text';
-    yCoordinatesInput.value = rover.yCoordinates.toString();
-
-    // Add event listener for x coordinate input validation and handling.
-    xCoordinatesInput.addEventListener('input', (event: Event) => 
+    this.roverList.forEach(rover => 
     {
-      //Add imput management.
-    });
+      const row = tableBody.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
+      const cell4 = row.insertCell(3);
 
-    // Add event listener for y coordinate input validation and handling.
-    yCoordinatesInput.addEventListener('input', (event: Event) => 
-    {
-      //Add imput management.
-    });
+      //Populate cells with rover parameters.
+      cell1.textContent = rover.id;
 
-    cell2.appendChild(xCoordinatesInput);
-    cell3.appendChild(yCoordinatesInput);
+      //Add input for starting x coordinates and set it to the starting x coordinates.
+      const xCoordinatesInput = document.createElement('input');
+      xCoordinatesInput.type = 'text';
+      xCoordinatesInput.value = rover.xCoordinates.toString();
 
-    //Add input for instructions and set it to the starting coordinates.
-    const instructionsInput = document.createElement('input');
-    instructionsInput.type = 'text';
+      //Add input for starting y coordinates and set it to the starting y coordinates.
+      const yCoordinatesInput = document.createElement('input');
+      yCoordinatesInput.type = 'text';
+      yCoordinatesInput.value = rover.yCoordinates.toString();
 
-      // Add event listener for input validation
-      instructionsInput.addEventListener('keydown', event => {
-      // Restricting characters other than N, E, S, W, n, e, s, w
-      if (!/[NESWnesw]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete') {
-          event.preventDefault();
-      }
+      // Add event listener for x coordinate input validation and handling.
+      xCoordinatesInput.addEventListener('input', (event: Event) => 
+      {
+        //Add imput management.
       });
 
-    cell4.appendChild(instructionsInput);
-    
+      // Add event listener for y coordinate input validation and handling.
+      yCoordinatesInput.addEventListener('input', (event: Event) => 
+      {
+        //Add imput management.
+      });
+
+      cell2.appendChild(xCoordinatesInput);
+      cell3.appendChild(yCoordinatesInput);
+
+      //Add input for instructions and set it to the starting coordinates.
+      const instructionsInput = document.createElement('input');
+      instructionsInput.type = 'text';
+      instructionsInput.addEventListener('input', (event: Event) => 
+      {
+        rover.instructions = (event.target as HTMLInputElement).value;
+      });
+
+      // Add event listener for input validation
+      instructionsInput.addEventListener('keydown', event => 
+      {
+        // Restricting characters other than N, E, S, W, n, e, s, w
+        if (!/[NESWnesw]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete') 
+        {
+            event.preventDefault();
+        }
+      });
+      cell4.appendChild(instructionsInput);
     });
     console.log('Table created.');
   }
 
   moveRovers(): void {
-    if(this.roverList.length > 0)
-      {
-        console.log('Rovers moved.');
-      }
-      else
-      {
-        console.log('No rovers.');
-      }
+    console.log(this.roverList);
+    if(this.roverList.length < 1)
+    {
+      alert('No rovers generated.');
+    }
+    else
+    {
+      let i = 1;
+      this.roverList.forEach(rover => {
+        rover.move(rover.instructions);
+
+        // Add code to update input field values with new coordinates
+
+        //Increment rover id.
+        i++;
+      });
+    }
   }
 }
