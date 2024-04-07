@@ -14,6 +14,18 @@ export class CalculatorComponent {
 
   //Variable that will store rover objects.
   roverList: Rover[] = [];
+  //Initialize all coordinates list.
+  coordinatesList = new Array();
+  //Initialize collisions list.
+  collisionsList = new Array();
+  // Define an interface for cell variables
+  cell1!: HTMLElement;
+  cell2!: HTMLElement;
+  cell3!: HTMLElement;
+  cell4!: HTMLElement;
+  xCoordinatesInput!: HTMLInputElement;
+  yCoordinatesInput!: HTMLInputElement;
+  
 
   //Upon component creation.
   ngOnInit()
@@ -49,44 +61,48 @@ export class CalculatorComponent {
     this.roverList = this.generateRovers();
     console.log(this.roverList);
 
+    let i = 1;
+
     // Iterate through rover objects and populate the table
     this.roverList.forEach(rover => 
     {
       const row = tableBody.insertRow();
-      const cell1 = row.insertCell(0);
-      const cell2 = row.insertCell(1);
-      const cell3 = row.insertCell(2);
-      const cell4 = row.insertCell(3);
+      this.cell1 = row.insertCell(0);
+      this.cell2 = row.insertCell(1);
+      this.cell3 = row.insertCell(2);
+      this.cell4 = row.insertCell(3);
 
       //Populate cells with rover parameters.
-      cell1.textContent = rover.id;
+      this.cell1.textContent = rover.id;
 
       //Add input for starting x coordinates and set it to the starting x coordinates.
-      const xCoordinatesInput = document.createElement('input');
-      xCoordinatesInput.type = 'text';
-      xCoordinatesInput.value = rover.xCoordinates.toString();
+      this.xCoordinatesInput = document.createElement('input');
+      this.xCoordinatesInput.type = 'text';
+      this.xCoordinatesInput.id = 'x-rover-' + i;
+      this.xCoordinatesInput.value = rover.xCoordinates.toString();
 
       //Add input for starting y coordinates and set it to the starting y coordinates.
-      const yCoordinatesInput = document.createElement('input');
-      yCoordinatesInput.type = 'text';
-      yCoordinatesInput.value = rover.yCoordinates.toString();
+      this.yCoordinatesInput = document.createElement('input');
+      this.yCoordinatesInput.type = 'text';
+      this.yCoordinatesInput.id = 'y-rover-' + i;
+      this.yCoordinatesInput.value = rover.yCoordinates.toString();
 
       // Add event listener for x coordinate input validation and handling.
-      xCoordinatesInput.addEventListener('input', (event: Event) => 
+      this.xCoordinatesInput.addEventListener('input', (event: Event) => 
       {
-        //Add imput management.
+        rover.xCoordinates = Number((event.target as HTMLInputElement).value);
       });
 
-      // Add event listener for y coordinate input validation and handling.
-      yCoordinatesInput.addEventListener('input', (event: Event) => 
+      //Add input for y-coordinates and set it to the starting coordinates.
+      this.yCoordinatesInput.addEventListener('input', (event: Event) => 
       {
-        //Add imput management.
+        rover.yCoordinates = Number((event.target as HTMLInputElement).value);
       });
 
-      cell2.appendChild(xCoordinatesInput);
-      cell3.appendChild(yCoordinatesInput);
+      this.cell2.appendChild(this.xCoordinatesInput);
+      this.cell3.appendChild(this.yCoordinatesInput);
 
-      //Add input for instructions and set it to the starting coordinates.
+      //Add input for instructions and set rover parameter equal to it..
       const instructionsInput = document.createElement('input');
       instructionsInput.type = 'text';
       instructionsInput.addEventListener('input', (event: Event) => 
@@ -94,37 +110,76 @@ export class CalculatorComponent {
         rover.instructions = (event.target as HTMLInputElement).value;
       });
 
-      // Add event listener for input validation
+      // Add event listener for input validation for instructions.
       instructionsInput.addEventListener('keydown', event => 
       {
-        // Restricting characters other than N, E, S, W, n, e, s, w
+        // Restrict characters other than N, E, S, W, n, e, s, w.
         if (!/[NESWnesw]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete') 
         {
             event.preventDefault();
         }
       });
-      cell4.appendChild(instructionsInput);
+      this.cell4.appendChild(instructionsInput);
+
+      //Increment i.
+      i++;
     });
     console.log('Table created.');
   }
 
-  moveRovers(): void {
+  moveRovers(): void 
+  {
     console.log(this.roverList);
+    //Check if rovers are created.
     if(this.roverList.length < 1)
     {
       alert('No rovers generated.');
     }
+    //Iterate through each rover and move them. Add all coordinates to a list and check for duplicates.
+    //These duplicates will reflect all coordinates on which these paths intersected.
+    //To avoid rover intersections from being detected when a rover drives over it's own path, I need to implements some code.
     else
     {
       let i = 1;
-      this.roverList.forEach(rover => {
-        rover.move(rover.instructions);
+      //Delete all contents of array.
+      this.coordinatesList = [];
 
-        // Add code to update input field values with new coordinates
+      //Iterate through each rover and move rover according to giver instructions.
+      this.roverList.forEach(rover => 
+      {
+        //Call move method in rover class and add all updated coordinates to coordinates list.
+        //Using array1.push(...array2) we can concatenate the arrays without the need for creating a new array.
+        this.coordinatesList.push(...rover.move(rover.instructions));
+
+        //Set value of x-coordinate input equal to x-coordinate rover parameter.
+        const xInputElement = document.getElementById('x-rover-' + i) as HTMLInputElement;
+        if(xInputElement) 
+        {
+          xInputElement.value = rover.xCoordinates.toString();
+        }
+        console.log('X-Coordinate input: ' + this.xCoordinatesInput.value + '; X-Coordinate parameter: ' + rover.xCoordinates);
+
+        //Set value of y-coordinate input equal to y-coordinate rover parameter.
+        const yInputElement = document.getElementById('y-rover-' + i) as HTMLInputElement;
+        if(yInputElement) 
+        {
+          yInputElement.value = rover.yCoordinates.toString();
+        }
+        console.log('Y-Coordinate input: ' + this.yCoordinatesInput.value + '; Y-Coordinate parameter: ' + rover.yCoordinates);
 
         //Increment rover id.
         i++;
       });
     }
+    console.log(this.coordinatesList);
+
+    //Check for duplicates.
+    this.collisionsList = this.findDuplicates(this.coordinatesList);
+    console.log('Collisions: ' + this.collisionsList);
+  }
+
+  findDuplicates(coordinateList: any[]) 
+  {
+    return coordinateList.filter((item, index) => coordinateList.indexOf(item) !== index);
   }
 }

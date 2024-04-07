@@ -1,3 +1,5 @@
+import { CalculatorComponent } from "./calculator.component";
+
 export class Rover {
 
     //Parameters for rover objects.
@@ -17,18 +19,24 @@ export class Rover {
     //Function to move the rover with each instruction, optimized with branchless coding instead of using a switch statement.
     //With branchless coding, the conditionals are converted to 0 for false and 1 for true.
     //This value is then added to the rover's current coordinate.
-    move(roverInstruction: string): void {
+    move(roverInstruction: string): any 
+    {
+      //Create array to store each rovers coordinates as it moves.
+      let roverCoordinates = new Array(); 
       //For debugging.
       console.log('Rover instructions:' + roverInstruction);
       console.log('Instructions string length: ' + roverInstruction.length)
       for(let i = 0; i < this.instructions.length; i++)
-        {
-          //Ensure characters are uppercase.
-          roverInstruction.toUpperCase();
-          //Move rover.
-          this.xCoordinates += +(roverInstruction[i] === 'E') - +(roverInstruction[i] === 'W');
-          this.yCoordinates += +(roverInstruction[i] === 'N') - +(roverInstruction[i] === 'S');
-        }
+      {
+        //Ensure characters are uppercase.
+        roverInstruction.toUpperCase();
+        //Move rover.
+        this.xCoordinates += +(roverInstruction[i] === 'E') - +(roverInstruction[i] === 'W');
+        this.yCoordinates += +(roverInstruction[i] === 'N') - +(roverInstruction[i] === 'S');
+        roverCoordinates.push('(' + this.xCoordinates + ',' + this.yCoordinates + ')');
+      }
+      console.log(roverCoordinates);
+      return roverCoordinates;
     }
   }
   
