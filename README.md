@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## To use the program.
+
+Navigate to the calculator page. Input a number of rovers. Generate them. In the generated table you can change the rover's starting coordinates and input instructions. (Valid input: N, E, S, W, n, e, s, w). Proceed to move the rovers.
