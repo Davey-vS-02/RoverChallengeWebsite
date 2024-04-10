@@ -9,6 +9,8 @@
       <button (click)="populateTable()" class="generate-rovers-button">Generate Rovers</button>
       <button (click)="moveRovers()" class="move-rovers-button">Move Rovers</button>
     </div>
+
+    <p id="intersections-paragraph">Intersections:</p>
     
     <table>
       <thead>
@@ -28,5 +30,9 @@
         </tr>
       </tbody>
     </table>
+
+    <svg [attr.width]="svgWidth" [attr.height]="svgHeight" class="visual-representation-svg">
+      <!-- Rover grid will be drawn dynamically here -->
+    </svg>
   </div>
 </main>

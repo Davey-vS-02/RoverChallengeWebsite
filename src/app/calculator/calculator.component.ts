@@ -16,8 +16,11 @@ export class CalculatorComponent {
   roverList: Rover[] = [];
   //Initialize all coordinates list.
   coordinatesList = new Array();
+  //Initialize current rover's coordinates list.
+  currentRoverPath = new Array();
   //Initialize collisions list.
-  collisionsList = new Array();
+  intersectionsList = new Set();
+
   // Define an interface for cell variables
   cell1!: HTMLElement;
   cell2!: HTMLElement;
@@ -25,6 +28,10 @@ export class CalculatorComponent {
   cell4!: HTMLElement;
   xCoordinatesInput!: HTMLInputElement;
   yCoordinatesInput!: HTMLInputElement;
+
+  // Variables to store SVG dimensions
+  svgWidth: number = 400;
+  svgHeight: number = 400;
   
 
   //Upon component creation.
@@ -37,21 +44,27 @@ export class CalculatorComponent {
   // Function to generate rover objects based on user input
   generateRovers() 
   {
+
+    //Clear all current collisions.
+    const intersectionsParagraph = document.getElementById("intersections-paragraph")!.textContent = "Intersections: ";
+
+    //Get rover count input and parse as an int.
     const roverCountInput = document.getElementById("roverCount") as HTMLInputElement;
     const roverCount = parseInt(roverCountInput.value);
 
+    //Generate rovers.
     const rovers = [];
     for (let i = 1; i <= roverCount; i++) {
-      const rover = new Rover(`Rover ${i}`, 0, 0, ""); // Default parameters
+      const rover = new Rover(`Rover ${i}`, 0, 0, ""); // Default parameters plus customized id for each rover.
+      //Add rovers to rovers list.
       rovers.push(rover);
     }
-
-    console.log(rovers);
     return rovers;
   }
 
   populateTable()
   {
+    //Get table body element.
     const tableBody = document.getElementById('table-body') as HTMLTableSectionElement;
 
     // Clear existing table rows
@@ -59,7 +72,6 @@ export class CalculatorComponent {
   
     // Generate rover objects based on user input
     this.roverList = this.generateRovers();
-    console.log(this.roverList);
 
     let i = 1;
 
@@ -121,15 +133,35 @@ export class CalculatorComponent {
       });
       this.cell4.appendChild(instructionsInput);
 
+      // Add event listener for input validation for x-coordinate.
+      this.xCoordinatesInput.addEventListener('keydown', event => 
+      {
+        // Restrict characters other than 0-9.
+        if (!/[0123456789]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete') 
+        {
+            event.preventDefault();
+        }
+      });
+      this.cell2.appendChild(this.xCoordinatesInput);
+
+      // Add event listener for input validation for y-coordinate.
+      this.yCoordinatesInput.addEventListener('keydown', event => 
+      {
+        // Restrict characters other than 0-9.
+        if (!/[0123456789]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete') 
+        {
+            event.preventDefault();
+        }
+      });
+
       //Increment i.
       i++;
     });
-    console.log('Table created.');
+    console.log('Rover table created.');
   }
 
   moveRovers(): void 
   {
-    console.log(this.roverList);
     //Check if rovers are created.
     if(this.roverList.length < 1)
     {
@@ -151,35 +183,63 @@ export class CalculatorComponent {
         //Using array1.push(...array2) we can concatenate the arrays without the need for creating a new array.
         this.coordinatesList.push(...rover.move(rover.instructions));
 
-        //Set value of x-coordinate input equal to x-coordinate rover parameter.
+        //Set value of x-coordinate input value equal to x-coordinate rover parameter.
         const xInputElement = document.getElementById('x-rover-' + i) as HTMLInputElement;
         if(xInputElement) 
         {
           xInputElement.value = rover.xCoordinates.toString();
         }
-        console.log('X-Coordinate input: ' + this.xCoordinatesInput.value + '; X-Coordinate parameter: ' + rover.xCoordinates);
 
-        //Set value of y-coordinate input equal to y-coordinate rover parameter.
+        //Set value of y-coordinate input value equal to y-coordinate rover parameter.
         const yInputElement = document.getElementById('y-rover-' + i) as HTMLInputElement;
         if(yInputElement) 
         {
           yInputElement.value = rover.yCoordinates.toString();
         }
-        console.log('Y-Coordinate input: ' + this.yCoordinatesInput.value + '; Y-Coordinate parameter: ' + rover.yCoordinates);
 
         //Increment rover id.
         i++;
       });
     }
-    console.log(this.coordinatesList);
+
+    console.log('All coordinate paths: ' + this.coordinatesList);
 
     //Check for duplicates.
-    this.collisionsList = this.findDuplicates(this.coordinatesList);
-    console.log('Collisions: ' + this.collisionsList);
+    this.intersectionsList = this.findDuplicates(this.coordinatesList);
+    console.log('Intersections: ' + new Array(...this.intersectionsList).join(' '));
+
+    //Change intersection paragraph text element to dynamically display collisions.
+    if(this.intersectionsList.size > 0)
+    {
+      document.getElementById("intersections-paragraph")!.textContent = "Intersections: " + new Array(...this.intersectionsList).join(' ');
+    }
+    else
+    {
+      document.getElementById("intersections-paragraph")!.textContent = "Intersections: None";
+    }
+    
   }
 
   findDuplicates(coordinateList: any[]) 
   {
-    return coordinateList.filter((item, index) => coordinateList.indexOf(item) !== index);
+    let intersections = new Set();
+    const uniqueElements = new Set();
+
+    //Interate through each coordinate and compare it with a set that has all the unique elements stored.
+    //If a coordinate is found in the unique elements set it will be seen as a duplicate and added to the duplicates set.
+    //Else it will be added to the unique coordinates set so future coordinates can use it to cross reference.
+    coordinateList.forEach(coordinate => 
+    {
+      if(uniqueElements.has(coordinate) || intersections.has(coordinate)) 
+      {
+        intersections.add(coordinate);
+      } 
+      else
+      {
+        uniqueElements.add(coordinate);
+      }
+    });
+
+    return intersections;
   }
 }

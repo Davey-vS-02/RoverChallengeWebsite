@@ -38,7 +38,7 @@ main
     position: absolute;
     width: 20vw;
     top: calc(50%);
-    left: calc(50%);
+    left: calc(50% - 2vw);
     z-index: 1;
     background: transparent;
     background-color: transparent;
@@ -68,14 +68,4 @@ main
     left: 50%;
     transform: translate(-50%, -50%);
     user-select: none;
-}
-
-.parallax
-{
-    transition: transform 1.2s ease-out;
-}
-
-.rotated-parallax
-{
-    transition: transform 1.2s ease-out;
 }

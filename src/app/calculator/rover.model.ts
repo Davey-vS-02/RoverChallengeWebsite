@@ -23,18 +23,19 @@ export class Rover {
     {
       //Create array to store each rovers coordinates as it moves.
       let roverCoordinates = new Array(); 
-      //For debugging.
-      console.log('Rover instructions:' + roverInstruction);
-      console.log('Instructions string length: ' + roverInstruction.length)
+
+      //Iterate through each character of the instructions string and update x and y coordinates.
       for(let i = 0; i < this.instructions.length; i++)
       {
         //Ensure characters are uppercase.
-        roverInstruction.toUpperCase();
+        roverInstruction = roverInstruction.toUpperCase();
         //Move rover.
         this.xCoordinates += +(roverInstruction[i] === 'E') - +(roverInstruction[i] === 'W');
         this.yCoordinates += +(roverInstruction[i] === 'N') - +(roverInstruction[i] === 'S');
+        //Add coordinate to rover path coordinate list.
         roverCoordinates.push('(' + this.xCoordinates + ',' + this.yCoordinates + ')');
       }
+      console.log(this.id + ' moved.')
       console.log(roverCoordinates);
       return roverCoordinates;
     }
