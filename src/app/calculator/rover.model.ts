@@ -23,6 +23,9 @@ export class Rover {
     {
       //Create array to store each rovers coordinates as it moves.
       let roverCoordinates = new Array(); 
+      //For debugging.
+      console.log('Rover instructions:' + roverInstruction);
+      console.log('Instructions string length: ' + roverInstruction.length)
 
       //Iterate through each character of the instructions string and update x and y coordinates.
       for(let i = 0; i < this.instructions.length; i++)

@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet, Router, ActivatedRoute} fro
 
 export class HomePageComponent implements OnInit, OnDestroy {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router, private route: ActivatedRoute) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router, private route: ActivatedRoute) {  }
 
   ngOnInit() 
   {
@@ -66,7 +66,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   //Runs when the current component is destroyed (When a new route is called).
   ngOnDestroy() {
     //Problem seemed to fix itself after splitting mousemove event listerner into it's own function.
-    //window.removeEventListener("mousemove", this.handleMouseMove)
+    //document.removeEventListener("mousemove", this.handleMouseMove)
 
     console.log('Home-page component destroyed.')
   }
