@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterEvent, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Rover } from './rover.model';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
+import { addListener } from 'process';
 
 @Component({
   selector: 'app-calculator',
@@ -119,7 +120,7 @@ export class CalculatorComponent {
       instructionsInput.type = 'text';
       instructionsInput.addEventListener('input', (event: Event) => 
       {
-        rover.instructions = (event.target as HTMLInputElement).value;
+        rover.instructions = (event.target as HTMLInputElement).value || '';
       });
 
       // Add event listener for input validation for instructions.
@@ -218,6 +219,8 @@ export class CalculatorComponent {
       document.getElementById("intersections-paragraph")!.textContent = "Intersections: None";
     }
     
+    //To test createSVG func
+    this.createRoverSVG();
   }
 
   findDuplicates(coordinateList: any[]) 
@@ -240,6 +243,80 @@ export class CalculatorComponent {
       }
     });
 
-    return intersections;
+    return intersections || '';
+  }
+
+  createRoverSVG()
+  {
+    console.log("Create rovers SVG function is running.")
+
+    //Find max values of rovers.
+    let xCoordinateMax = Math.max.apply(null,
+    this.roverList.map(function (rover) { return rover.xCoordinates; })) || 0;
+
+    let yCoordinateMax = Math.max.apply(null,
+    this.roverList.map(function (rover) { return rover.yCoordinates; })) || 0;
+
+    console.log('x-Max: ' + xCoordinateMax + '; y-Max: ' +  yCoordinateMax)
+
+    //Create rover grid according to max and and y values.
+    //Get svg element.
+    let svg = document.getElementById('visual-representation-svg');
+    //Clear svg.
+    while(svg?.firstChild)
+    {
+      svg.removeChild(svg.firstChild);
+    }
+
+    //Check if svg is null (Even though it won't ever be.)
+    if(svg)
+    {
+      //Create rect.
+      let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      rect.setAttribute('width', '400');
+      rect.setAttribute('height', '400');
+      rect.setAttribute('stroke', 'aliceblue')
+      rect.setAttribute('fill', 'none')
+      rect.setAttribute('stroke-width', '2')
+      svg?.appendChild(rect);
+
+      //Create lines depending on max rover coordinates.
+      //Find step size of every line in grid of 400w and 400h.
+      //Check if max coordinates are 0. If it is, return the step as 0. Otherwise you divide by 0.
+      let xCoordinateStep = xCoordinateMax !== 0 ? 400 / xCoordinateMax : 0;
+      let yCoordinateStep = yCoordinateMax !== 0 ? 400 / yCoordinateMax : 0;
+      let currentXCoordinateStep = xCoordinateStep;
+      let currentYCoordinateStep = yCoordinateStep;
+
+      //Create horisontal lines.
+      for(let i = yCoordinateMax; i>0; i--)
+      {
+        let xLine = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        xLine.setAttribute('stroke', 'aliceblue');
+        xLine.setAttribute('stroke-width', '2');
+        xLine.setAttribute('x1', '0');
+        xLine.setAttribute('x2', '400');
+        xLine.setAttribute('y1', currentYCoordinateStep.toString());
+        xLine.setAttribute('y2', currentYCoordinateStep.toString());
+        svg.appendChild(xLine);
+        //Add one step.
+        currentYCoordinateStep = currentYCoordinateStep + yCoordinateStep;
+      }
+
+      //Create vertical lines for every step.  
+      for(let i = xCoordinateStep; i>0; i--)
+      {
+        let yLine = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        yLine.setAttribute('stroke', 'aliceblue');
+        yLine.setAttribute('stroke-width', '2');
+        yLine.setAttribute('x1', currentXCoordinateStep.toString());
+        yLine.setAttribute('x2', currentXCoordinateStep.toString());
+        yLine.setAttribute('y1', '0');
+        yLine.setAttribute('y2', '400');
+        svg.appendChild(yLine);
+        //Add one step.
+        currentXCoordinateStep = currentXCoordinateStep + xCoordinateStep;
+      }
+    }
   }
 }

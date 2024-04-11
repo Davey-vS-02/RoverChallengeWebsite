@@ -58,14 +58,15 @@ main
 
 .home-page-header
 {
-    font-weight: 100;
+    font-weight: 400;
     font-size: 8vw;
     z-index: 1000;
-    color: aliceblue;
+    color: rgb(204, 209, 214);
     position: absolute;
     text-align: center;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-5%, -15%);
     user-select: none;
+    opacity: 0.8;
 }

@@ -157,10 +157,11 @@ input value
 
 line, rect
 {
-  stroke: aliceblue;
+  scale: 1.0001;
+  /*Placeholder, has no real effect.*/
 }
 
-.visual-representation-svg
+#visual-representation-svg
 {
   margin-bottom: 8vw;
 }

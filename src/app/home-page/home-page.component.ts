@@ -93,7 +93,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       let speedx = el.dataset['speedx'];
       let speedy = el.dataset['speedy'];
       el.style.transform = `translateX(calc(-50% + ${-xValue * (speedx as unknown as number)}px)) translateY(calc(-50% + ${yValue * (speedy as unknown as number)}px))`;
-      el.style.transition = `transform 1.2s ease-out`
+      el.style.transition = `transform 1.5s ease-out`
     })
 
     rotate_el.forEach(el =>
@@ -101,7 +101,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       let speedx = el.dataset['speedx'];
       let speedy = el.dataset['speedy'];
       el.style.transform = `translateX(calc(-50% + ${-xValue * (speedx as unknown as number)}px)) translateY(calc(-50% + ${yValue * (speedy as unknown as number)}px)) rotate(90deg)`;
-      el.style.transition = `transform 1.2s ease-out`
+      el.style.transition = `transform 1.5s ease-out`
     })
   }
 }

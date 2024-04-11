@@ -37,7 +37,7 @@ export class Rover {
       }
       console.log(this.id + ' moved.')
       console.log(roverCoordinates);
-      return roverCoordinates;
+      return roverCoordinates || "";
     }
   }
   
