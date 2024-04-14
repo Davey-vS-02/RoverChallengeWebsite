@@ -26,7 +26,19 @@ export class CalculatorComponent {
   xStartingCoordinates: any = [];
   yStartingCoordinates: any = [];
 
-  // Define an interface for cell variables
+  //Lists that store the rover paths separately.
+  xCoordinateList: number[] = new Array();
+  yCoordinateList: number[] = new Array();
+
+  //Max coordinates that rovers travelled.
+  xCoordinateMax = 0;
+  yCoordinateMax = 0;
+
+  //Coordinate step for rover grid view.
+  xCoordinateStep = 0;
+  yCoordinateStep = 0;
+
+  //Define an interface for cell variables
   cell1!: HTMLElement;
   cell2!: HTMLElement;
   cell3!: HTMLElement;
@@ -37,7 +49,6 @@ export class CalculatorComponent {
   // Variables to store SVG dimensions
   svgWidth: number = 400;
   svgHeight: number = 400;
-  
 
   //Upon component creation.
   ngOnInit()
@@ -189,6 +200,9 @@ export class CalculatorComponent {
       let i = 1;
       //Delete all contents of array.
       this.allRoverPaths = [];
+      //Reset starting coordinate lists.
+      this.xStartingCoordinates = [];
+      this.yStartingCoordinates = [];
 
       //Iterate through each rover and move rover according to giver instructions.
       this.roverList.forEach(rover => 
@@ -196,10 +210,6 @@ export class CalculatorComponent {
 
         console.log('Rover x-coordinate that will be set to starting: ' + rover.xCoordinates);
         console.log('Rover y-coordinate that will be set to starting: ' + rover.yCoordinates);
-
-        //Reset starting coordinate lists.
-        this.xStartingCoordinates = [];
-        this.yStartingCoordinates = [];
 
         //Add rover starting coordinates.
         this.xStartingCoordinates.push(rover.xCoordinates as number);
@@ -260,6 +270,7 @@ export class CalculatorComponent {
     console.log(this.allRoverPaths);
 
     //Check for duplicates.
+    this.intersectionsList.clear();
     this.intersectionsList = this.findDuplicates(this.allRoverPaths);
     console.log('Intersections: ' + new Array(...this.intersectionsList).join(' '));
 
@@ -312,10 +323,6 @@ export class CalculatorComponent {
     let randomColor = this.getRandomBrightColor();
     console.log("Create rovers SVG function is running.")
 
-    //Lists that store the rover paths separately.
-    let xCoordinateList: number[] = new Array();
-    let yCoordinateList: number[] = new Array();
-
     //Split each coordinate string into separate parts to find max of each.
     this.allRoverPaths.forEach((currentRoverCoordinateSet: any) => 
     {      
@@ -333,19 +340,19 @@ export class CalculatorComponent {
               let splitCoordinate = coordinateStr.split(',');
       
               //Add all x and y coordinates of every rover to a list to find the max.
-              xCoordinateList.push(parseInt(splitCoordinate[0]));
-              yCoordinateList.push(parseInt(splitCoordinate[1]));
+              this.xCoordinateList.push(parseInt(splitCoordinate[0]));
+              this.yCoordinateList.push(parseInt(splitCoordinate[1]));
       
-              console.log("xCoordinateList: " + xCoordinateList);
-              console.log("yCoordinateList: " + yCoordinateList);
+              console.log("xCoordinateList: " + this.xCoordinateList);
+              console.log("yCoordinateList: " + this.yCoordinateList);
             }
         }
       );
     });
 
     //Unpack coordinate lists and find maximum coordinates.
-    let xCoordinateMax = Math.max(...xCoordinateList) + 1 || 0;
-    let yCoordinateMax = Math.max(...yCoordinateList) + 1 || 0;
+    this.xCoordinateMax = Math.max(...this.xCoordinateList) + 1 || 0;
+    this.yCoordinateMax = Math.max(...this.yCoordinateList) + 1 || 0;
 
     //Create rover grid according to max x and y values.
     //Clear SVG Grid.
@@ -374,17 +381,24 @@ export class CalculatorComponent {
 
       //Create lines depending on max rover coordinates.
       //Find step size of every line in grid of 400w and 400h.
-      //Check if max coordinates are 0. If it is, return the step as 0. Otherwise you divide by 0.
-      let xCoordinateStep = xCoordinateMax !== 0 ? 400 / xCoordinateMax : 1;
-      let yCoordinateStep = yCoordinateMax !== 0 ? 400 / yCoordinateMax : 1;
-      let currentXCoordinateStep = xCoordinateStep;
-      let currentYCoordinateStep = yCoordinateStep;
+      //Check if max coordinates are 0. If it is, return the step as 1. Otherwise you divide by 0.
+
+      //Coordinate step for rover grid view.
+      this.xCoordinateStep = this.xCoordinateMax !== 0 ? 400.0 / this.xCoordinateMax : 1;
+      this.yCoordinateStep = this.yCoordinateMax !== 0 ? 400.0 / this.yCoordinateMax : 1;
+      
+      //Set current coordinate step of svg.
+      let currentXCoordinateStep = this.xCoordinateStep;
+      let currentYCoordinateStep = this.yCoordinateStep;
+
+      console.log('x-CoordinateStep: ' + this.xCoordinateStep)
 
       //Create horisontal lines for every step.
-      for(let i = yCoordinateMax; i>0; i--)
+      for(let i = this.yCoordinateMax; i>0; i--)
       {
         let xLine = document.createElementNS("http://www.w3.org/2000/svg", "line")
         xLine.setAttribute('stroke', 'aliceblue');
+        xLine.setAttribute('stroke-opacity', '0.5');
         xLine.setAttribute('stroke-width', '2');
         xLine.setAttribute('x1', '15');
         xLine.setAttribute('x2', '415');
@@ -392,14 +406,15 @@ export class CalculatorComponent {
         xLine.setAttribute('y2', (currentYCoordinateStep + 15).toString());
         svg.appendChild(xLine);
         //Add one step.
-        currentYCoordinateStep = currentYCoordinateStep + yCoordinateStep;
+        currentYCoordinateStep = currentYCoordinateStep + this.yCoordinateStep;
       }
 
       //Create vertical lines for every step.  
-      for(let i = xCoordinateStep; i>0; i--)
+      for(let i = this.xCoordinateStep; i>0; i--)
       {
         let yLine = document.createElementNS("http://www.w3.org/2000/svg", "line")
         yLine.setAttribute('stroke', 'aliceblue');
+        yLine.setAttribute('stroke-opacity', '0.5');
         yLine.setAttribute('stroke-width', '2');
         yLine.setAttribute('x1', (currentXCoordinateStep + 15).toString());
         yLine.setAttribute('x2', (currentXCoordinateStep + 15).toString());
@@ -407,8 +422,11 @@ export class CalculatorComponent {
         yLine.setAttribute('y2', '415');
         svg.appendChild(yLine);
         //Add one step.
-        currentXCoordinateStep = currentXCoordinateStep + xCoordinateStep;
+        currentXCoordinateStep = currentXCoordinateStep + this.xCoordinateStep;
       }
+
+      //Create rover paths.
+      this.createRoverPaths();
 
       //Draw a line path for every rover.
       //Convert coordinates to grid steps.
@@ -438,15 +456,15 @@ export class CalculatorComponent {
             yIntersectionsList.push(parseInt(splitCoordinate[1]));
 
             //Change position of intersection coordinate to svg coordinate.
-            let x = splitCoordinate[0] * xCoordinateStep + 15;
-            let y = 415 - (splitCoordinate[1] * yCoordinateStep);
+            let x = splitCoordinate[0] * this.xCoordinateStep + 15;
+            let y = 415 - (splitCoordinate[1] * this.yCoordinateStep);
 
             //Draw intersection points.
             let intersectionPoint = document.createElementNS("http://www.w3.org/2000/svg", "circle")
             intersectionPoint.setAttribute('cx', x.toString());
             intersectionPoint.setAttribute('cy', y.toString());
             intersectionPoint.setAttribute('r', "8");
-            intersectionPoint.setAttribute('fill', randomColor);
+            intersectionPoint.setAttribute('fill', 'aliceblue');
             svg?.appendChild(intersectionPoint);
     
             console.log("xIntersectionsList: " + xIntersectionsList);
@@ -462,11 +480,10 @@ export class CalculatorComponent {
         console.log('CreateX function has ran.')
         console.log('x-Starting coordinate: ' + this.xStartingCoordinates[roverNumber]);
         console.log('y-Starting coordinate: ' + this.yStartingCoordinates[roverNumber]);
-        let startingCoordinate = this.createX(this.xStartingCoordinates[roverNumber] * xCoordinateStep + 15, 415 - this.yStartingCoordinates[roverNumber] * yCoordinateStep, 5, randomColor);
+        let startingCoordinate = this.createX(this.xStartingCoordinates[roverNumber] * this.xCoordinateStep + 15, 415 - this.yStartingCoordinates[roverNumber] * this.yCoordinateStep, 5, randomColor);
         svg?.appendChild(startingCoordinate);
         roverNumber++;
       });
-
     }
   }
 
@@ -512,10 +529,84 @@ export class CalculatorComponent {
       
     const svgX = document.createElementNS("http://www.w3.org/2000/svg", "path");
     svgX.setAttribute("d", path);
-    svgX.setAttribute("stroke", color || "black");
+    svgX.setAttribute("stroke", "aliceblue");
     svgX.setAttribute("stroke-width", strokeWidth || "6");
     svgX.setAttribute("fill", "none");
 
     return svgX;
+  }
+
+  createRoverPaths()
+  {
+    //Path lists as split strings.
+    let xPathList: any = [];
+    let yPathList: any = [];
+
+    //Find svg element.
+    let svg = document.getElementById('visual-representation-svg');
+
+    let roverNumber = 0;
+    
+    this.allRoverPaths.forEach(currentRoverPath => 
+    {
+      //Generate random colors for each rover.
+      let randomColor = this.getRandomBrightColor();
+      //Cleat path lists before checking new rover.
+      xPathList = [];
+      yPathList = [];
+      currentRoverPath.forEach((coordinate: any) => 
+      {
+        if(typeof coordinate === 'string')
+        {
+          //Remove parantheses.
+          coordinate = coordinate.replace(/[()]/g, '');
+  
+          //Explicitly convert to string.
+          let roverPathStr: string = coordinate;
+  
+          //Split coordinate string.
+          let splitPath = roverPathStr.split(',');
+  
+          //Add all x and y coordinates of every rover to a list to find the max.
+          xPathList.push(parseInt(splitPath[0]));
+          yPathList.push(parseInt(splitPath[1]));
+        }
+      });
+
+      //Draw line from starting coordinate to first rover coordinate.
+      let x1 = this.xStartingCoordinates[roverNumber] * this.xCoordinateStep + 15;
+      let y1 = 415 - this.yStartingCoordinates[roverNumber] * this.yCoordinateStep;
+      let x2 = xPathList[0] * this.xCoordinateStep + 15;
+      let y2 = 415 - yPathList[0] * this.yCoordinateStep;
+      roverNumber++;
+
+      const firstPath = `M${x1} ${y1} ${x2} ${y2} M${x1} ${y2} ${x2} ${y1}`;
+
+      const roverFirstSVGPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      roverFirstSVGPath.setAttribute("d", firstPath);
+      roverFirstSVGPath.setAttribute("stroke", randomColor || "black");
+      roverFirstSVGPath.setAttribute("stroke-width", "6");
+      roverFirstSVGPath.setAttribute("fill", "none");
+      svg?.appendChild(roverFirstSVGPath);
+
+
+      //Draw the rest of the rover paths.
+      for (let i = 0; i < xPathList.length - 1; i++) 
+      {
+        let x1 = xPathList[i] * this.xCoordinateStep + 15;
+        let y1 = 415 - yPathList[i] * this.yCoordinateStep;
+        let x2 = xPathList[i + 1] * this.xCoordinateStep + 15;
+        let y2 = 415 - yPathList[i + 1] * this.yCoordinateStep;
+
+        const currentPath = `M${x1} ${y1} ${x2} ${y2} M${x1} ${y2} ${x2} ${y1}`;
+
+        const roverSVGPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        roverSVGPath.setAttribute("d", currentPath);
+        roverSVGPath.setAttribute("stroke", randomColor || "black");
+        roverSVGPath.setAttribute("stroke-width", "6");
+        roverSVGPath.setAttribute("fill", "none");
+        svg?.appendChild(roverSVGPath);
+      }
+    });
   }
 }
