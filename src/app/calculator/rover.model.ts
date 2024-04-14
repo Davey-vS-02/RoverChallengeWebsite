@@ -21,7 +21,7 @@ export class Rover
   //Function to move the rover with each instruction, optimized with branchless coding instead of using a switch statement.
   //With branchless coding, the conditionals are converted to 0 for false and 1 for true.
   //This value is then added to the rover's current coordinate.
-  move(roverInstruction: string): string[] 
+  move(roverInstruction: string, alertCallback: () => void): string[] 
   {
     //Create array to store each rovers coordinates as it moves.
     let roverCoordinates: string[] = new Array(); 
@@ -43,6 +43,8 @@ export class Rover
       if(this.xCoordinates < 0 || this.yCoordinates < 0)
       {
         alert("A rover has drifted off the grid. Rovers reset. Please verify rover inputs. ");
+        alertCallback();
+        break;
       }
       //Add coordinate to rover path coordinate list.
       roverCoordinates.push('(' + this.xCoordinates + ',' + this.yCoordinates + ')');

@@ -83,6 +83,13 @@ export class CalculatorComponent {
   //Function to create an populate rover table. Is called upon pressing "Generate rovers" button.
   populateTable()
   {
+    // Hide the move rovers button.
+    let moveRoverButton = document.getElementById('move-rovers-button');
+    if (moveRoverButton !== null && moveRoverButton !== undefined) 
+    {
+      moveRoverButton.style.display = 'inline-block';
+    }
+
     //Get table body element.
     const tableBody = document.getElementById('table-body') as HTMLTableSectionElement;
 
@@ -220,7 +227,7 @@ export class CalculatorComponent {
 
         //Call move method in rover class and add all updated coordinates to coordinates list.
         //Handle when a rover drifts off the desired grid.
-        let currentRoverCoordinates = rover.move(rover.instructions);
+        let currentRoverCoordinates = rover.move(rover.instructions, this.populateTable);
         console.log('CurrentRoverCoordinates: ' + currentRoverCoordinates);
 
         // if(currentRoverCoordinates instanceof Error)
@@ -286,6 +293,13 @@ export class CalculatorComponent {
     
     //Upon moving of rovers, the SVG graphic will be created for the rover grid.
     this.createRoverSVG();
+
+    // Hide the move rovers button.
+    let moveRoverButton = document.getElementById('move-rovers-button');
+    if (moveRoverButton !== null && moveRoverButton !== undefined) 
+    {
+      moveRoverButton.style.display = 'none';
+    }
   }
  
   //Used to find intersection points of rovers. Checks for duplicates in rover paths.
@@ -509,9 +523,10 @@ export class CalculatorComponent {
     const red = Math.floor(Math.random() * 175) + 75; // Random value between 100 and 250
     const green = Math.floor(Math.random() * 175) + 75; // Random value between 100 and 250
     const blue = Math.floor(Math.random() * 175) + 75  ; // Random value between 100 and 250
+    const alpha = 0.75;
 
-    // Construct the color in hexadecimal format
-    const color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
+    // Construct the color in rgba format
+    const color = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 
     return color;
   }
