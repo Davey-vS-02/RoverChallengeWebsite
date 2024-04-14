@@ -12,28 +12,27 @@
 
     <p id="intersections-paragraph">Intersections:</p>
     
-    <table>
-      <thead>
-        <tr>
-          <th>Rover Name</th>
-          <th>x-Coordinates</th>
-          <th>y-Coordinates</th>
-          <th>Direction</th>
-        </tr>
-      </thead>
-      <tbody id="table-body">
-        <tr *ngFor="let rover of roverList">
-          <td>{{ rover.id }}</td>
-          <td>{{ rover.xCoordinates }}</td>
-          <td>{{ rover.yCoordinates }}</td>
-          <td>{{ rover.instructions }}</td>
-        </tr>
-      </tbody>
-    </table>
-
+      <table class="rover-table">
+        <thead>
+          <tr>
+            <th>Rover Name</th>
+            <th>x-Coordinates</th>
+            <th>y-Coordinates</th>
+            <th>Direction</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr *ngFor="let rover of roverList">
+            <td>{{ rover.id }}</td>
+            <td>{{ rover.xCoordinates }}</td>
+            <td>{{ rover.yCoordinates }}</td>
+            <td>{{ rover.instructions }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
       <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" id="visual-representation-svg">
-
+        <!-- The rover grid will dynamically be added here. -->
       </svg>
-
-  </div>
+    </div>
 </main>

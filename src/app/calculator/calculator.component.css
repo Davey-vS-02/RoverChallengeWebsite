@@ -155,12 +155,6 @@ input value
   margin-bottom: 7vw;
 }
 
-line, rect
-{
-  scale: 1.0001;
-  /*Placeholder, has no real effect.*/
-}
-
 #visual-representation-svg
 {
   margin-bottom: 8vw;

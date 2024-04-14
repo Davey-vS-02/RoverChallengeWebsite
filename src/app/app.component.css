@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;800&display=swap');
 
-@font-face {
-    font-family: BlackMango_Black;
-    src: url(/./assets/Fonts/blackmango-black-webfont.woff);
-}
-
 *, *::before, *::after
 {
     padding: 0;
@@ -35,7 +30,6 @@
     align-items: center;
     justify-content: center;
     max-width: 40vw;
-    font-family: BlackMango_Black, sans-serif;
     font-size: 2vw;
     font-weight: 700;
 }
@@ -91,7 +85,6 @@ header ul li:hover
 header ul a
 {
     text-decoration: none;
-    font-family: BlackMango_Black, sans-serif;
     font-weight: 800;
     color: aliceblue;
     text-transform: uppercase;
